@@ -1,0 +1,110 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+The goal of this MidTerm project is to use different various air pollutants to understand carbon emission and pollution in different region and differnt period of the Earth as it can help identify how green house gases are harmful for the people 
+
+
+ Reading an excel file with the required files:
+```{r}
+library(readxl)
+data <- read_xlsx("continentwise.xlsx")
+head(data)
+```
+
+
+```{r}
+# Load necessary libraries
+
+#description of data 
+
+library(dplyr)
+
+library(ggplot2)
+
+filtered_data <-  read_xlsx("continentwise.xlsx")
+
+
+
+# Group data by region
+grouped_data <- filtered_data %>% group_by(Region)
+
+# Create a list of pollutant names
+Greenhouse_Gases <- c('Nitrogen Oxide', 'Sulphur Dioxide', 'Carbon Monoxide', 'Organic Carbon', 'NMVOCs', 'Black Carbon', 'Ammonia')
+
+# Plot temporal trends for each pollutant with different colors
+for (region in unique(filtered_data$Region)) {
+  subset_data <- grouped_data %>% filter(Region == region)
+  plot <- ggplot(subset_data, aes(x = Year)) +
+    labs(title = paste("Understanding the Environmental Impact: The Greenhouse gases change in", region)) +
+    xlab("Year") + ylab("Pollutant Level")
+    
+  # Assign different colors to each pollutant using aes
+  plot <- plot + geom_line(aes(y = !!sym(Greenhouse_Gases[1]), color = Greenhouse_Gases[1]), linetype = "solid", size = 1.2) +
+   geom_line(aes(y = !!sym(Greenhouse_Gases[2]), color = Greenhouse_Gases[2]), linetype = "solid", size = 1.2) +
+   geom_line(aes(y = !!sym(Greenhouse_Gases[3]), color = Greenhouse_Gases[3]), linetype = "solid", size = 1.2) +
+  geom_line(aes(y = !!sym(Greenhouse_Gases[4]), color = Greenhouse_Gases[4]), linetype = "solid", size = 1.2) +
+  geom_line(aes(y = !!sym(Greenhouse_Gases[5]), color = Greenhouse_Gases[5]), linetype = "solid", size = 1.2) +
+  geom_line(aes(y = !!sym(Greenhouse_Gases[6]), color = Greenhouse_Gases[6]), linetype = "solid", size = 1.2) +
+  geom_line(aes(y = !!sym(Greenhouse_Gases[7]), color = Greenhouse_Gases[7]), linetype = "solid", size = 1.2)
+  print(plot)
+}
+```
+
+
+```{r}
+
+
+boxplot_plot <- ggplot(filtered_data, aes(x = Region, y = `Nitrogen Oxide`)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Comparison of Nitrogen Oxide Levels by Region",
+       x = "Region",
+       y = "Nitrogen Oxide Level")
+
+# Print the boxplot
+print(boxplot_plot)
+
+```
+
+```{r}
+boxplot_plot <- ggplot(filtered_data, aes(x = Region, y = `Carbon Monoxide`)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Comparison of Carbon Monoxide Levels by Region",
+       x = "Region",
+       y = "Carbon Monoxide")
+
+# Print the boxplot
+print(boxplot_plot)
+```
+Why: 
+The answer to question is already explained at the start of the Midterm Project
+
+
+Description of Data:
+
+In my analysis, I chose line plots as my preferred visualization method because they effectively illustrate temporal trends over a specific period. I customized each line plot's title, x-axis label, and y-axis label to provide context to the viewer.
+
+For the second set of graphs, I utilized box plots. Box plots are fantastic for summarizing and comparing the distribution of a numeric variable, in this case, "Nitrogen Oxide" and "Carbon Monoxide," across different categories, such as regions. They provide valuable insights into the median, quartiles, and outliers. To create these plots, I used the ggplot() function to initiate the plot's creation.
+
+Conclusions and Citations:
+
+I found that elevated levels of carbon monoxide (CO) in the atmosphere can be a significant indicator of several critical factors and potential issues. These high CO levels often suggest incomplete combustion, which may result from vehicle emissions, industrial processes, or residential heating. This can pose a risk to human health, as CO is a colorless, odorless gas that can lead to carbon monoxide poisoning, causing symptoms like headaches, dizziness, and, in severe cases, death. Elevated CO levels are typically associated with increased air pollution and environmental concerns, impacting both air quality and climate change.
+
+Elevated levels of nitrogen oxide (NOx) in regions such as Asia signify poor air quality, posing health risks, environmental damage, and contributions to climate change. Addressing high NOx levels is essential for improving air quality and protecting public health.
+
+Citations for further reading:
+
+Nitrogen Oxide (NOx): https://www.epa.gov/no2-pollution
+Carbon Monoxide (CO): https://www.cdc.gov/co/default.htm
+
+Ethics Issues:
+
+In my analysis of temporal trends in greenhouse gases, I am acutely aware of potential ethical considerations. These considerations encompass responsible data handling, ensuring accuracy, transparency, and guarding against bias and manipulation. It's paramount to present results in an organized and concise manner, free from any manipulation that could favor one environmental policy over another.
+
+For instance, when I observed the reduction of ammonia levels in some regions, I refrained from making sweeping conclusions about the overall state of the environment without considering other relevant variables. This approach ensures that my data analysis remains objective and unbiased, which is critical for maintaining the integrity and credibility of environmental research and its impact on decision-making.
+
+
+
+
+
